@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "orderdetails")
@@ -19,11 +20,9 @@ public class Order {
 	private Long id;
 
 	@Column
-	private Date createDate;
-
-	@Column
 	private Date deleteDate;
-	
+	@Column
+	private Integer orderAmount;
 	@Column
 	private Date dueDate;
 	@Column
@@ -32,18 +31,73 @@ public class Order {
 	private String orderDiscriptions;
 	@Column
 	private String orderStatus;
+	@Column
+	private Date draftDate;
+	@Column 
+	private Date readyDate;
+	@Column 
+	private Date inProgressDate;
+	@Column
+	private Date completionDate;
+	@Column 
+	private Date overdueDate;
+	
+	@Column
+	@Size(min = 3, max = 3)
+	private String currency;
+	
+	
+	
+	
+	public Date getInProgressDate() {
+		return inProgressDate;
+	}
+	public void setInProgressDate(Date inProgressDate) {
+		this.inProgressDate = inProgressDate;
+	}
+	public Date getDraftDate() {
+		return draftDate;
+	}
+	public void setDraftDate(Date draftDate) {
+		this.draftDate = draftDate;
+	}
+	public Date getReadyDate() {
+		return readyDate;
+	}
+	public void setReadyDate(Date readyDate) {
+		this.readyDate = readyDate;
+	}
+	public Date getCompletionDate() {
+		return completionDate;
+	}
+	public void setCompletionDate(Date completionDate) {
+		this.completionDate = completionDate;
+	}
+	public Date getOverdueDate() {
+		return overdueDate;
+	}
+	public void setOverdueDate(Date overdueDate) {
+		this.overdueDate = overdueDate;
+	}
+	public Integer getOrderAmount() {
+		return orderAmount;
+	}
+	public void setOrderAmount(Integer orderAmount) {
+		this.orderAmount = orderAmount;
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+	
 	public Date getDeleteDate() {
 		return deleteDate;
 	}
