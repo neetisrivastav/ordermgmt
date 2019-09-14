@@ -62,7 +62,7 @@ public class OrderApplicationTests {
 	@Test
 	public void testUpdateStatus() {
 		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8081/updatestatus/5";
+		final String baseUrl = "http://localhost:8081/updatestatus/18";
 		ResponseEntity<Order> result = restTemplate.exchange(baseUrl, HttpMethod.PUT,null, Order.class);
 		Order order = result.getBody();
 		Assert.assertEquals(200, result.getStatusCodeValue());
