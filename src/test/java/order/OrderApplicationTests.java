@@ -31,7 +31,7 @@ public class OrderApplicationTests {
 	@Test
 	public void testAddSaveOrder() {
 		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8081/saveorderdetails/";
+		final String baseUrl = "http://localhost:8081/createorder/";
 		Calendar cal = Calendar.getInstance();
 		cal.set(2019, 10, 20);
 		Order order = new Order(12, cal.getTime(), "T-Shirts", new Date(), "INR");
@@ -48,7 +48,7 @@ public class OrderApplicationTests {
 	@Test
 	public void testGetOrderListSuccess() {
 		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8081/getorders";
+		final String baseUrl = "http://localhost:8081/orders";
 		ResponseEntity<List<Order>> result = restTemplate.exchange(baseUrl, HttpMethod.GET, null,
 				new ParameterizedTypeReference<List<Order>>() {
 				});
@@ -62,7 +62,7 @@ public class OrderApplicationTests {
 	@Test
 	public void testUpdateStatus() {
 		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8081/changeorderdetails/5";
+		final String baseUrl = "http://localhost:8081/updatestatus/5";
 		ResponseEntity<Order> result = restTemplate.exchange(baseUrl, HttpMethod.PUT,null, Order.class);
 		Order order = result.getBody();
 		Assert.assertEquals(200, result.getStatusCodeValue());

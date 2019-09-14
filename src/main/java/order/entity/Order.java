@@ -65,8 +65,6 @@ public class Order implements Serializable{
 	private Date inProgressDate;
 	@Column
 	private Date completionDate;
-	@Column 
-	private Date overdueDate;
 	
 	@Column
 	@Size(min = 3, max = 3,message = "invalid currency, must be of 3 characters only")
@@ -101,12 +99,7 @@ public class Order implements Serializable{
 	public void setCompletionDate(Date completionDate) {
 		this.completionDate = completionDate;
 	}
-	public Date getOverdueDate() {
-		return overdueDate;
-	}
-	public void setOverdueDate(Date overdueDate) {
-		this.overdueDate = overdueDate;
-	}
+	
 	public Integer getOrderAmount() {
 		return orderAmount;
 	}

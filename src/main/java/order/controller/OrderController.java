@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import order.dao.OrderRepository;
 import order.entity.Order;
 import order.exceptionhandler.OrderNotFoundException;
+import order.util.Constants;
 
 /**
  * @author Neeti
@@ -59,7 +60,7 @@ public class OrderController {
 	/**
 	 * @return return all orders till now
 	 */
-	@GetMapping(value = "/getorders")
+	@GetMapping(value = "/orders")
 	public ResponseEntity<List<Order>> getorders() {
 		
 		return new ResponseEntity<List<Order>>(orderRepository.findAll(), HttpStatus.OK);
@@ -69,9 +70,10 @@ public class OrderController {
 	 * @param order take order details to add into database
 	 * @return saved order details
 	 */
-	@PostMapping(value = "/saveorderdetails")
-	public ResponseEntity<Order> saveOrderDetails( @Valid @RequestBody Order order) {
+	@PostMapping(value = "/createorder")
+	public ResponseEntity<Order> createorder( @Valid @RequestBody Order order) {
 		order.setDraftDate(new Date());
+		order.setOrderStatus(Constants.DRAFT);
 		orderRepository.save(order);
 		return new ResponseEntity<Order>(order, HttpStatus.OK);
 	}
@@ -80,17 +82,20 @@ public class OrderController {
 	 * @param orderid to update status of order
 	 * @return updated order details
 	 */
-	@PutMapping(value = "/changeorderdetails/{orderid}")
-	public ResponseEntity<Order> changeOrderStatus( @PathVariable(name = "orderid") String orderid) {
+	@PutMapping(value = "/updatestatus/{orderid}")
+	public ResponseEntity<Order> updatestatus( @PathVariable(name = "orderid") String orderid) {
 		Order order = orderRepository.findById(Long.parseLong(orderid)).get();
 		if(order==null)
 			throw new OrderNotFoundException("invalid order id : "+orderid);
 		if (order.getDraftDate() != null && order.getReadyDate() == null) {
 			order.setReadyDate(new Date());
+			order.setOrderStatus(Constants.READY);
 		} else if (order.getReadyDate() != null && order.getInProgressDate() == null) {
 			order.setInProgressDate(new Date());
+			order.setOrderStatus(Constants.INPROGRESS);
 		}else if (order.getInProgressDate() != null && order.getCompletionDate() == null) {
 			order.setCompletionDate(new Date());
+			order.setOrderStatus(Constants.COMPLETED);
 		}
 		order.setUpdateDate(new Date());
 		orderRepository.save(order);
