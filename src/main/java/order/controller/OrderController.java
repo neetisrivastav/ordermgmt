@@ -4,77 +4,97 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import order.dao.OrderRepository;
 import order.entity.Order;
+import order.exceptionhandler.OrderNotFoundException;
 
+/**
+ * @author Neeti
+ *
+ */
 @RestController
 public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	@GetMapping(value = "/orderform")
-	public String orderform(ModelMap model) {
-		model.addAttribute("order", new Order());
-		return "orderform";
-	}
 
+	/**
+	 * @param orderid, to get the order details for specific order id
+	 * @return return order details corresponding to order id 
+	 */
 	@GetMapping(value = "/orderdetails/{orderid}")
-	public Order orderDetails(ModelMap model, @PathVariable(name = "orderid") String orderid) {
-		return orderRepository.findById(Long.parseLong(orderid)).get();
+	public ResponseEntity<Order> orderDetails(@PathVariable(name = "orderid") String orderid) {
+		Optional<Order> order = orderRepository.findById(Long.parseLong(orderid));
+		if(!order.isPresent()) {
+			throw new OrderNotFoundException("invalid order id : "+orderid);
+			}
+		return new ResponseEntity<Order>(order.get(),HttpStatus.OK);
 	}
+	/**
+	 * @return return all over due orders till now
+	 */
 	@GetMapping(value = "/overdueorders")
-	public List<Order> overdueorders(ModelMap model) {
+	public ResponseEntity<List<Order>> overdueorders() {
 		LocalDate dueDate = LocalDate.now().minusDays(7);
 		Date dt = java.util.Date.from(dueDate.atStartOfDay()
 			      .atZone(ZoneId.systemDefault())
 			      .toInstant());
-		return orderRepository.getOverDueOrders(dt);
+		return new ResponseEntity<List<Order>>(orderRepository.getOverDueOrders(dt), HttpStatus.OK);
+	}
+	/**
+	 * @return return all orders till now
+	 */
+	@GetMapping(value = "/getorders")
+	public ResponseEntity<List<Order>> getorders() {
+		
+		return new ResponseEntity<List<Order>>(orderRepository.findAll(), HttpStatus.OK);
 	}
 
+	/**
+	 * @param order take order details to add into database
+	 * @return saved order details
+	 */
 	@PostMapping(value = "/saveorderdetails")
-	@ResponseBody
-	public String saveOrderDetails(ModelMap model, @ModelAttribute(name = "order") @Valid Order order,
-			BindingResult results) {
-		if (results.hasErrors()) {
-			model.addAttribute("order", order);
-			return "orderform";
-		}
+	public ResponseEntity<Order> saveOrderDetails( @Valid @RequestBody Order order) {
 		order.setDraftDate(new Date());
 		orderRepository.save(order);
-		return "success";
+		return new ResponseEntity<Order>(order, HttpStatus.OK);
 	}
 
+	/**
+	 * @param orderid to update status of order
+	 * @return updated order details
+	 */
 	@PutMapping(value = "/changeorderdetails/{orderid}")
-	public String changeOrderStatus(ModelMap model, @PathVariable(name = "orderid") String orderid) {
+	public ResponseEntity<Order> changeOrderStatus( @PathVariable(name = "orderid") String orderid) {
 		Order order = orderRepository.findById(Long.parseLong(orderid)).get();
-		String status = "";
+		if(order==null)
+			throw new OrderNotFoundException("invalid order id : "+orderid);
 		if (order.getDraftDate() != null && order.getReadyDate() == null) {
 			order.setReadyDate(new Date());
-			status = "ready state";
 		} else if (order.getReadyDate() != null && order.getInProgressDate() == null) {
 			order.setInProgressDate(new Date());
-			status = "in progress";
 		}else if (order.getInProgressDate() != null && order.getCompletionDate() == null) {
 			order.setCompletionDate(new Date());
-			status = "completed stage";
 		}
 		order.setUpdateDate(new Date());
 		orderRepository.save(order);
-		return "successfully moved to "+status;
+		return new ResponseEntity<Order>(order, HttpStatus.OK);
 	}
 
 }
