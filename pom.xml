@@ -12,6 +12,13 @@
 	<name>OrderMgntSystem</name>
 	<description>Offer Manegment System</description>
 
+	<!-- <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.2.RELEASE</version>
+		<relativePath />
+	</parent> -->
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -27,14 +34,7 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-activemq</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-broker</artifactId>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -53,7 +53,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-ehcache</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -65,17 +69,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+				 <exclusions>
+			        <exclusion>
+			            <groupId>org.springframework.boot</groupId>
+			            <artifactId>spring-boot-starter-logging</artifactId>
+			        </exclusion>
+    			</exclusions>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>2.0.1.RELEASE</version><!--$NO-MVN-MAN-VER$ -->
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+				
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -88,6 +95,62 @@
 			<version>0.7.0</version>
 		</dependency>
 
+		<!-- Junit 5 -->
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-api</artifactId>
+			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-engine</artifactId>
+			    <scope>test</scope>
+			</dependency>
+			 <dependency>
+			    <groupId>org.junit.platform</groupId>
+			    <artifactId>junit-platform-launcher</artifactId>
+			    <scope>test</scope>
+			</dependency>
+			 
+			<!-- Mockito extention -->
+			<dependency>
+			    <groupId>org.mockito</groupId>
+			    <artifactId>mockito-junit-jupiter</artifactId>
+			    <scope>test</scope>
+			</dependency> 
+			<!-- Swagger implementation -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.6.1</version>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.6.1</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+			<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+	        
+
+			
+			<!-- Runtime, for Embedded Elasticsearch,
+            comment this if connect to external elastic search server-->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

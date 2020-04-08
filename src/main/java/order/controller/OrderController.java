@@ -1,6 +1,8 @@
 package order.controller;
 
 import java.time.LocalDate;
+
+
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +13,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import order.dao.OrderRepository;
+
 import order.entity.Order;
+
 import order.exceptionhandler.OrderNotFoundException;
 import order.util.Constants;
 
@@ -33,7 +36,8 @@ public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 
-
+//	@Autowired
+//	private OrderRepositoryElasticSearch orderRepositoryElasticSearch;
 	/**
 	 * @param orderid, to get the order details for specific order id
 	 * @return return order details corresponding to order id 
@@ -65,7 +69,6 @@ public class OrderController {
 		
 		return new ResponseEntity<List<Order>>(orderRepository.findAll(), HttpStatus.OK);
 	}
-
 	/**
 	 * @param order take order details to add into database
 	 * @return saved order details

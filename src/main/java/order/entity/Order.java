@@ -3,6 +3,7 @@ package order.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 @Entity
 @Table(name = "orderdetails")
+@Cacheable
 public class Order implements Serializable{
 	
 	public Order() {
