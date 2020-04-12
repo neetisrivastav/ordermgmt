@@ -32,6 +32,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //				.antMatchers(HttpMethod.GET, "/identifier*").permitAll().antMatchers(HttpMethod.GET, "/identifier/*")
 //				.permitAll()
 				.antMatchers(HttpMethod.GET, "/locations*").permitAll()
+				.antMatchers(HttpMethod.POST, "/kafka/publish*").permitAll()
 				.antMatchers(HttpMethod.GET, "/swagger-ui.html*").permitAll()
 				.antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/v2/api*").permitAll()
